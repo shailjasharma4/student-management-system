@@ -1,0 +1,113 @@
+import java.awt.*;
+import java.awt.event.*;
+import java.sql.*;
+import javax.swing.JOptionPane;
+
+public class SignInPage extends Frame {
+
+    private Connection connection; // Declaring connection as a class-level variable
+    private Statement statement;
+
+    SignInPage() {
+
+        String url = "jdbc:mysql://localhost:3306/student";
+        String username = "root";
+        String password = "root";
+
+        try {
+            // Establishing connection
+            connection = DriverManager.getConnection(url, username, password);
+            statement = connection.createStatement();
+
+            // Creating table if it doesn't exist
+            String createTableQuery = "CREATE TABLE IF NOT EXISTS student (id INT AUTO_INCREMENT PRIMARY KEY, username VARCHAR(50), password VARCHAR(50))";
+            statement.executeUpdate(createTableQuery);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        Label titleLabel = new Label("Register");
+        titleLabel.setFont(new Font("Osward", Font.BOLD, 24));
+        titleLabel.setBounds(200, 50, 100, 30);
+        
+        Label usernameLabel = new Label("Username:");
+        usernameLabel.setFont(new Font("Osward", Font.PLAIN, 16));
+        usernameLabel.setBounds(100, 120, 80, 20);
+        
+        TextField usernameField = new TextField();
+        usernameField.setBounds(200, 120, 200, 20);
+        
+        Label passwordLabel = new Label("Password:");
+        passwordLabel.setFont(new Font("Osward", Font.PLAIN, 16));
+        passwordLabel.setBounds(100, 160, 80, 20);
+        
+        TextField passwordField = new TextField();
+        passwordField.setBounds(200, 160, 200, 20);
+        passwordField.setEchoChar('*');
+        
+        Button signInButton = new Button("Register");
+        signInButton.setBackground(Color.cyan);
+        signInButton.setBounds(200, 200, 80, 30);
+        
+        Button cancelButton = new Button("Cancel");
+        cancelButton.setBackground(Color.cyan);
+        cancelButton.setBounds(300, 200, 80, 30);
+
+        setTitle("Sign In Page");
+        setLayout(null);
+        setSize(500, 300);
+        setVisible(true);
+
+        add(titleLabel);
+        add(usernameLabel);
+        add(usernameField);
+        add(passwordLabel);
+        add(passwordField);
+        add(signInButton);
+        add(cancelButton);
+
+        signInButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String username = usernameField.getText();
+                String password = passwordField.getText();
+                insertData(username, password); // Call insertData method to insert values into the database
+        
+                // Show a pop-up message indicating successful sign-in
+                JOptionPane.showMessageDialog(null, "Registration successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
+            }
+        });
+        
+
+        cancelButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                dispose(); // Close the frame
+            }
+        });
+
+        addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                dispose(); // Close the frame
+            }
+        });
+    }
+
+    private void insertData(String username, String password) {
+        try {
+            // Inserting data into the student table
+            String insertQuery = "INSERT INTO student (username, password) VALUES (?, ?)";
+            PreparedStatement preparedStatement = connection.prepareStatement(insertQuery);
+            preparedStatement.setString(1, username);
+            preparedStatement.setString(2, password);
+            preparedStatement.executeUpdate();
+
+            System.out.println("Data inserted successfully.");
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public static void main(String[] args) {
+        new SignInPage();
+    }
+}
