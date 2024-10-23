@@ -1,0 +1,224 @@
+import java.awt.*;
+import java.awt.event.*;
+import java.sql.*;
+
+class Student extends Frame implements ActionListener {
+    Label lstitle, lsname, lsrollno, lsclass, lgender,  lsmob, lsadrs;
+    CheckboxGroup gender;
+    Checkbox male, female, TFW;
+    Choice csclass;
+    TextField tfsname, tfsrollno, tfsmob;
+    TextArea tasadrs;
+    Button submit,back,next;
+
+    TextArea display_details;
+
+    Student() {
+        lstitle = new Label("BASIC INFORMATION ");
+        lstitle.setFont(new Font("Osward", Font.BOLD, 38 ));
+		lstitle.setForeground(Color.BLACK);
+        lsname = new Label("Name : ");
+        lsname.setFont(new Font("Osward", Font.BOLD, 12 ));
+        lsrollno = new Label("Roll No : ");
+        lsrollno.setFont(new Font("Osward", Font.BOLD, 12 ));
+        lsclass = new Label("Class : ");
+        lsclass.setFont(new Font("Osward", Font.BOLD, 12 ));
+        lgender = new Label("Gender : ");
+        lgender.setFont(new Font("Osward", Font.BOLD, 12));
+       
+        lsmob = new Label("Mobile : ");
+        lsmob.setFont(new Font("Osward", Font.BOLD, 12 ));
+        lsadrs = new Label("Address : ");
+        lsadrs.setFont(new Font("Osward", Font.BOLD, 12 ));
+
+        gender = new CheckboxGroup();
+        male = new Checkbox("Male", gender, false);
+        female = new Checkbox("Female", gender, false);
+
+        TFW = new Checkbox("TUITION FEE WAIVER");
+        lstitle.setFont(new Font("Osward", Font.BOLD, 38 ));
+
+        csclass = new Choice();
+        csclass.add("B.TECH(CSE)");
+        csclass.add("B.TECH(ECE)");
+        csclass.add("MCA");
+
+        tfsname = new TextField();
+        tfsrollno = new TextField();
+        tfsmob = new TextField();
+
+        tasadrs = new TextArea("", 2, 100, TextArea.SCROLLBARS_NONE);
+
+        submit = new Button("Submit");
+        submit.setBackground(Color.LIGHT_GRAY);
+        submit.setFont(new Font("Osward", Font.BOLD, 15 ));
+		back=new Button("Back");
+        back.setBackground(Color.LIGHT_GRAY);
+        back.setFont(new Font("Osward", Font.BOLD, 15 ));
+        
+        next=new Button("Attendance Page");
+        next.setFont(new Font("Osward", Font.BOLD, 15 ));
+
+
+        display_details = new TextArea("", 2, 100, TextArea.SCROLLBARS_NONE);
+        display_details.setEditable(false);
+        lstitle.setBounds(50, 40, 600, 30);
+        lsname.setBounds(10, 100, 50, 20);
+        tfsname.setBounds(70, 100, 150, 20);
+
+        lsrollno.setBounds(240, 100, 50, 20);
+        tfsrollno.setBounds(300, 100, 150, 20);
+
+        lsclass.setBounds(10, 130, 50, 20);
+        csclass.setBounds(70, 130, 150, 20);
+
+        lgender.setBounds(240, 130, 50, 20);
+        male.setBounds(300, 130, 50, 20);
+        female.setBounds(360, 130, 60, 20);
+
+        lsmob.setBounds(10, 160, 50, 20);
+        tfsmob.setBounds(70, 160, 150, 20);
+
+        TFW.setBounds(240, 160, 150, 20);
+
+        lsadrs.setBounds(10, 190, 50, 20);
+        tasadrs.setBounds(70, 190, 380, 70);
+
+        submit.setBounds(10, 280, 440, 30);
+		back.setBounds(100, 330, 100, 30);
+        next.setBounds(300,330,150,30);
+
+        display_details.setBounds(10, 400, 440, 100);
+        add(lstitle);
+        add(lsname);
+        add(lsrollno);
+        add(lsclass);
+        add(lgender);
+        
+        add(lsadrs);
+        add(lsmob);
+
+        add(male);
+        add(female);
+
+        add(csclass);
+
+        add(tfsname);
+        add(tfsrollno);
+        add(tasadrs);
+        add(tfsmob);
+
+        add(TFW);
+
+        add(submit);
+		
+		setBackground(Color.CYAN);
+
+        add(display_details);
+		add(back);
+        add(next);
+        next.setBackground(Color.LIGHT_GRAY);
+
+        submit.addActionListener(this);
+
+        setTitle("Students Details");
+        setSize(400, 400);
+        setLayout(null);
+        setVisible(true);
+
+        addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                dispose();
+            }
+        });
+        next.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                 new AttendancePage();
+               
+            }
+        });
+        back.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                new LoginPage();
+               
+            }
+        });
+    }
+
+    // public void actionPerformed(ActionEvent e) {
+    //     if (e.getSource() == submit) {
+    //         String tp = TFW.getState() ? "Applied for Tuition Fee Waiver" : "Not Applied for Tuition Fee Waiver";
+
+    //         String sdetails = " ***** Students Details ***** Name : " + tfsname.getText() + " Roll No. :" + tfsrollno.getText() + " Class : " + csclass.getSelectedItem() + "  Gender : " + gender.getSelectedCheckbox().getLabel() + " Mobile : " + tfsmob.getText() + "  TFW : " + tp + " Address : " + tasadrs.getText();
+
+    //         display_details.setText(sdetails);
+    //     }
+    // }
+
+
+
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == submit) {
+            String name = tfsname.getText();
+            String rollNo = tfsrollno.getText();
+            String className = csclass.getSelectedItem();
+            String genderStr = male.getState() ? "Male" : "Female"; // Assuming only male or female checkboxes are selected
+            String mobile = tfsmob.getText();
+            String address = tasadrs.getText();
+            boolean isTFW = TFW.getState();
+            
+            // Display details
+            String details = " ***** Students Details ***** Name : " + name + " Roll No. :" + rollNo + " Class : " + className + "  Gender : " + genderStr + " Mobile : " + mobile + "  TFW : " + (isTFW ? "Applied for Tuition Fee Waiver" : "Not Applied for Tuition Fee Waiver") + " Address : " + address;
+            display_details.setText(details);
+    
+            // Insert into the database
+            try {
+                // Register JDBC driver
+                Class.forName("com.mysql.jdbc.Driver");
+    
+                // Open a connection
+                Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/student"
+                , "root","root");
+    
+                // Check if the table exists, if not, create it
+                Statement stmt = conn.createStatement();
+                String createTableSQL = "CREATE TABLE IF NOT EXISTS studentdata ("
+                        + "id INT AUTO_INCREMENT PRIMARY KEY,"
+                        + "Name VARCHAR(255),"
+                        + "RollNo VARCHAR(255),"
+                        + "Class VARCHAR(255),"
+                        + "Gender VARCHAR(255),"
+                        + "Mobile VARCHAR(255),"
+                        + "TFW BOOLEAN,"
+                        + "Address TEXT)";
+                stmt.executeUpdate(createTableSQL);
+                
+                // Prepare the statement for insertion
+                String insertSQL = "INSERT INTO studentdata (Name, RollNo, Class, Gender, Mobile, TFW, Address) VALUES (?, ?, ?, ?, ?, ?, ?)";
+                PreparedStatement pstmt = conn.prepareStatement(insertSQL);
+                pstmt.setString(1, name);
+                pstmt.setString(2, rollNo);
+                pstmt.setString(3, className);
+                pstmt.setString(4, genderStr);
+                pstmt.setString(5, mobile);
+                pstmt.setBoolean(6, isTFW);
+                pstmt.setString(7, address);
+    
+                // Execute the insert statement
+                pstmt.executeUpdate();
+    
+                // Clean-up environment
+                pstmt.close();
+                conn.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            } catch (ClassNotFoundException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        new Student();
+    }
+}
