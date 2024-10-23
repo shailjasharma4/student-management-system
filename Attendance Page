@@ -1,0 +1,59 @@
+import java.awt.*;
+import java.awt.event.*;
+
+public class AttendancePage extends Frame {
+
+    AttendancePage() {
+        Label title, backButtonLabel; // Declare backButtonLabel
+        Button backButton; // Declare backButton
+        // Other components as needed
+        
+        title = new Label("Attendance Page");
+        title.setFont(new Font("Osward", Font.BOLD, 24));
+        
+        backButton = new Button("Back"); // Instantiate backButton
+        backButtonLabel = new Label("(Click here to go back)"); // Instantiate backButtonLabel
+        backButton.setBackground(Color.cyan); // Set backButton's background color
+        
+        // Other components instantiation and positioning
+        
+        title.setBounds(100, 40, 200, 30);
+        
+        // Positioning and sizing of other components
+        
+        backButton.setBounds(30, 300, 100, 30); // Set backButton's position
+        backButtonLabel.setBounds(140, 300, 120, 30); // Set backButtonLabel's position
+
+        setBackground(Color.LIGHT_GRAY);
+
+        // Add other components to the frame
+        add(title);
+        // Add other components
+        
+        add(backButton); // Add backButton to the frame
+        add(backButtonLabel); // Add backButtonLabel to the frame
+
+        setLayout(null);
+        setSize(400, 400); // Adjusted size for better visibility
+        setVisible(true);
+        setTitle("Attendance Page");
+        
+        backButton.addActionListener(new ActionListener() { // Add ActionListener to backButton
+            public void actionPerformed(ActionEvent e) {
+                // Define action for back button
+                // For example, go back to the previous page or close the current page
+                dispose(); // Close the current page
+            }
+        });
+
+        addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                System.exit(0);
+            }
+        });
+    }
+
+    public static void main(String[] args) {
+        new AttendancePage();
+    }
+}
