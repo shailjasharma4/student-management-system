@@ -1,0 +1,56 @@
+import java.awt.*;
+public class LoginPage extends Frame{
+    LoginPage(){
+     Label l1,l2,l3;
+     Button b1,b2;
+     TextField t2 ,t3;
+     l1=new Label("STUDENT MANAGEMENT SYSTEM   ");
+     l1.setFont(new Font("Osward", Font.BOLD, 38));
+    
+     
+     
+     l2=new Label("Username");
+
+     l2.setFont(new Font("Osward", Font.BOLD, 20));
+     l3=new Label("Password");
+     
+     l3.setFont(new Font("Osward", Font.BOLD, 20));
+
+     b1= new Button("Login");
+     b2=new Button("Sign In");
+     b1.setBackground(Color.cyan);
+     b2.setBackground(Color.cyan);
+
+     
+     t2= new TextField();
+     t3 =new TextField();
+     
+     l1.setBounds(100,40,650,50);
+     l2.setBounds(120,150,150,30);
+     l3.setBounds(120, 225, 150, 30);
+    //  t1.setBounds(200,80,150,30);
+     t2.setBounds(300,150,230,30);
+     t3.setBounds(300,220,230,30);
+    //  t3.setEchoChar(*);
+
+     b1.setBounds(300,300,100,30);
+     b2.setBounds(450,300,100,30);
+     Frame fm=new Frame();
+     Color c=Color.BLUE;
+     fm.setBackground(c);
+     add(l1);
+     add(l2);
+     add(l3);
+     add(t2);
+     add(t3);
+     add(b1);
+     add(b2);
+     setLayout(null);
+     setSize(400,300);
+     setVisible(true);
+     setTitle("Login Page");
+}
+public static void main(String[] args) {
+  new LoginPage();  
+}
+}
